@@ -2,6 +2,9 @@ package com.example.testing;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +23,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setupfirebaseauth();
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.menu1,menu);
+
+        return true;    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+
+            case R.id.items:mAuth.signOut();
+                finish();
+                startActivity(new Intent(MainActivity.this,login.class));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 /****************************** firebase ************************************/
@@ -56,7 +78,7 @@ startActivity(new Intent(this,home.class));
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         mAuth.addAuthStateListener(mAuthListener);
-mAuth.signOut();
+//mAuth.signOut();
         checkcurrentuser(mAuth.getCurrentUser());
     }
 

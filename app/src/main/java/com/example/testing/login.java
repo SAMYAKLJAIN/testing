@@ -150,7 +150,6 @@ System.out.println("fsjkjnsnasjksnajkndaddddddddddddddddddddddddd");
             Intent intent = new Intent(login.this,home
                     .class);
             startActivity(intent);
-            System.out.println("fsjkjnsnasjksnajkndaddddddddddddddddddddddddd");
             finish();
         }
     }
