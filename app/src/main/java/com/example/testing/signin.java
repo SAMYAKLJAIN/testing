@@ -3,9 +3,14 @@ package com.example.testing;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,27 +31,65 @@ public class signin extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private static CheckBox show_hide_password;
 
     private Context mContext;
     private ProgressBar mProgressBar;
     private EditText mEmail, mPassword;
+
     @Override
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         mContext = signin.this;
-
+        show_hide_password = findViewById(R.id.show_hide_password);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mEmail = (EditText) findViewById(R.id.input_email);
         mPassword = (EditText) findViewById(R.id.input_password);
-        mProgressBar=(ProgressBar)findViewById(R.id.progressBar);
-         mProgressBar.setVisibility(ProgressBar.GONE);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mProgressBar.setVisibility(ProgressBar.GONE);
+
+        // Set check listener over checkbox for showing and hiding password
+        show_hide_password
+                .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                    @Override
+                    public void onCheckedChanged(CompoundButton button,
+                                                 boolean isChecked) {
+
+                        // If it is checkec then show password else hide
+                        // password
+                        if (isChecked) {
+
+                            show_hide_password.setText(R.string.hide_pwd);// change
+                            // checkbox
+                            // text
+
+                            mPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+                            mPassword.setTransformationMethod(HideReturnsTransformationMethod
+                                    .getInstance());// show password
+                        } else {
+                            show_hide_password.setText(R.string.show_pwd);// change
+                            // checkbox
+                            // text
+
+                            mPassword.setInputType(InputType.TYPE_CLASS_TEXT
+                                    | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                            mPassword.setTransformationMethod(PasswordTransformationMethod
+                                    .getInstance());// hide password
+
+                        }
+
+                    }
+                });
 
         setupFirebaseAuth();
-init();
+        init();
 
     }
+
+
     private void setupFirebaseAuth() {
         mAuth = FirebaseAuth.getInstance();
 

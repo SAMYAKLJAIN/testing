@@ -1,12 +1,14 @@
 package com.example.testing;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -53,13 +55,23 @@ public class register extends AppCompatActivity {
         mContext = register.this;
         firebaseMethods = new FirebaseMethods(mContext);
         Log.d(TAG, "onCreate: started.");
-
+        TextView linkSignUp = (TextView) findViewById(R.id.link_signup);
+        TextView already_user=findViewById(R.id.already_user);
+        already_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: navigating to register screen");
+                Intent intent = new Intent(register.this, login.class);
+                startActivity(intent);
+            }
+        });
         initWidgets();
         setupFirebaseAuth();
         init();
     }
 
     private void init(){
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
 
             @Override

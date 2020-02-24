@@ -70,8 +70,9 @@ setupfirebaseauth();
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -100,11 +101,11 @@ public class home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
 
-        Button btnConfirmSignout = (Button) findViewById(R.id.signout);
+        //Button btnConfirmSignout = (Button) findViewById(R.id.signout);
 
 
         setupFirebaseAuth();
-
+/*
         btnConfirmSignout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +116,26 @@ public class home extends AppCompatActivity {
                 finish();
 
             }
-        });
+        });*/
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.menu1,menu);
+
+        return true;    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+
+            case R.id.items:mAuth.signOut();
+                finish();
+                startActivity(new Intent(home.this,login.class));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
      /*
     ------------------------------------ Firebase ---------------------------------------------
@@ -144,7 +164,7 @@ public class home extends AppCompatActivity {
 
                     Log.d(TAG, "onAuthStateChanged: navigating back to login screen.");
                     Intent intent = new Intent(home.this, signin.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
                 // ...
