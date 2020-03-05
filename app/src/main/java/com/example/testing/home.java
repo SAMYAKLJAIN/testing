@@ -134,7 +134,7 @@ public class home extends AppCompatActivity {
                 finish();
                 startActivity(new Intent(home.this,login.class));
                 return true;
-            case R.id.item3:startActivity(new Intent(this,imageupload.class));
+            case R.id.item3:startActivity(new Intent(this,profile.class));
         }
         return super.onOptionsItemSelected(item);
     }

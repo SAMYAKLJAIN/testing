@@ -54,7 +54,7 @@ startActivity(new Intent(this,signin.class));
 }
 else {
 
-startActivity(new Intent(this,upload.class));
+startActivity(new Intent(this,home.class));
 }
 
 
