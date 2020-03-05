@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_imageupload);
         setupfirebaseauth();
 
     }
@@ -54,7 +54,7 @@ startActivity(new Intent(this,signin.class));
 }
 else {
 
-startActivity(new Intent(this,home.class));
+startActivity(new Intent(this,imageupload.class));
 }
 
 

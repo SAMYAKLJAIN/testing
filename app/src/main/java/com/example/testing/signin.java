@@ -42,8 +42,10 @@ public class signin extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
+
         mContext = signin.this;
         show_hide_password = findViewById(R.id.show_hide_password);
+
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mEmail = (EditText) findViewById(R.id.input_email);
         mPassword = (EditText) findViewById(R.id.input_password);

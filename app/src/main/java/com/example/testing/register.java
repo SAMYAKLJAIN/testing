@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 /**
@@ -33,8 +34,8 @@ public class register extends AppCompatActivity {
     private static final String TAG = "register";
 
     private Context mContext;
-    private String email, username, password;
-    private EditText mEmail, mPassword, mUsername;
+    private String email, username, password,password1,location1,mobile1;
+    private EditText mEmail, mPassword, mUsername,mobile,location,cpassword;
     private Button btnRegister;
     private ProgressBar mProgressBar;
 
@@ -44,6 +45,8 @@ public class register extends AppCompatActivity {
     private FirebaseMethods firebaseMethods;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
+    private FirebaseFirestore fstore;
+
 
     private String append = "";
 
@@ -54,6 +57,8 @@ public class register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         mContext = register.this;
         firebaseMethods = new FirebaseMethods(mContext);
+
+
         Log.d(TAG, "onCreate: started.");
         TextView linkSignUp = (TextView) findViewById(R.id.link_signup);
         TextView already_user=findViewById(R.id.already_user);
@@ -80,11 +85,14 @@ public class register extends AppCompatActivity {
                 email = mEmail.getText().toString();
                 username = mUsername.getText().toString();
                 password = mPassword.getText().toString();
+                mobile1=mobile.getText().toString();
+                location1=location.getText().toString();
+                password1=cpassword.getText().toString();
 
                 if(checkInputs(email, username, password)){
                     mProgressBar.setVisibility(View.VISIBLE);
 
-                    firebaseMethods.registerNewEmail(email, password, username);
+                    firebaseMethods.registerNewEmail(email, password, username,mobile1,location1,password1);
                 }
             }
         });
@@ -110,6 +118,11 @@ public class register extends AppCompatActivity {
         mPassword = (EditText) findViewById(R.id.input_password);
         mContext = register.this;
         mProgressBar.setVisibility(View.GONE);
+         mobile = findViewById(R.id.mobileNumber);
+         location=findViewById(R.id.location);
+         cpassword=findViewById(R.id.confirmPassword);
+
+
 
     }
 
