@@ -1,6 +1,8 @@
 package com.example.testing;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,7 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class profile extends AppCompatActivity {
     TextView fullname,email,phone,location;
-    ImageView im;
+    ImageView im,editim;
     private FirebaseAuth mAuth;
     private FirebaseFirestore fstore;
     private DocumentReference myRef;
@@ -32,8 +34,15 @@ String userid;
           phone=findViewById(R.id.contactvalue);
           location=findViewById(R.id.location);
           im=findViewById(R.id.profile);
+          editim=findViewById(R.id.edit);
         mAuth = FirebaseAuth.getInstance();
         fstore=FirebaseFirestore.getInstance();
+        editim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(profile.this,editprofile.class));
+            }
+        });
 
         userid=mAuth.getCurrentUser().getUid();
         myRef=fstore.collection("users").document(userid);

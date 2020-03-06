@@ -71,8 +71,7 @@ public class upload extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         mButtonChooseImage = findViewById(R.id.button_choose_image);
         mButtonUpload = findViewById(R.id.button_upload);
-        mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
-        mEditTextFileName = findViewById(R.id.edit_text_file_name);
+
         mImageView = findViewById(R.id.image_view);
         mProgressBar = findViewById(R.id.progress_bar);
 
@@ -126,12 +125,7 @@ public class upload extends AppCompatActivity {
             }
         });
 
-        mTextViewShowUploads.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
     }
 
 
@@ -229,7 +223,7 @@ mImageView.setImageURI(mImageUri);
                                     if (task.isSuccessful()) {
 
 downloadimageurl=task.getResult().toString();
-                                        Toast.makeText(upload.this, "getting product image successfully", Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(upload.this, "getting product image successfully", Toast.LENGTH_SHORT).show();
                                         savedata();
 
                                     }
@@ -237,10 +231,7 @@ downloadimageurl=task.getResult().toString();
                             });
 
 
-                            Upload upload = new Upload(user_id.trim(),
-                                    taskSnapshot.getUploadSessionUri().toString());
-                            String uploadId = mDatabaseRef.push().getKey();
-                            mDatabaseRef.child(uploadId).setValue("hiii");
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -284,7 +275,7 @@ downloadimageurl=task.getResult().toString();
                     Toast.makeText(upload.this, "User Data is Stored Successfully", Toast.LENGTH_LONG).show();
 
 
-                    Intent mainIntent = new Intent(upload.this, home.class);
+                    Intent mainIntent = new Intent(upload.this, profile.class);
 
 
                     startActivity(mainIntent);
