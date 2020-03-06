@@ -21,6 +21,7 @@ public class profile extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore fstore;
     private DocumentReference myRef;
+    private String image;
 String userid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,9 @@ String userid;
                 fullname.setText(documentSnapshot.getString("Fullname"));
                 email.setText(documentSnapshot.getString("email"));
                 location.setText(documentSnapshot.getString("location"));
-                Glide.with(profile.this).load("https://firebasestorage.googleapis.com/v0/b/testdex-7c52c.appspot.com/o/new%2F1583432119753.jpg?alt=media&token=e41df19c-558e-4274-9333-b52ef8d33b2d").into(im);
+image=documentSnapshot.getString("userImage");
+
+                Glide.with(profile.this).load(image).into(im);
 
 
             }

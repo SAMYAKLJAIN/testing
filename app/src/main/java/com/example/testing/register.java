@@ -89,7 +89,7 @@ public class register extends AppCompatActivity {
                 location1=location.getText().toString();
                 password1=cpassword.getText().toString();
 
-                if(checkInputs(email, username, password)){
+                if(checkInputs(email, username, password,mobile1)){
                     mProgressBar.setVisibility(View.VISIBLE);
 
                     firebaseMethods.registerNewEmail(email, password, username,mobile1,location1,password1);
@@ -98,9 +98,9 @@ public class register extends AppCompatActivity {
         });
     }
 
-    private boolean checkInputs(String email, String username, String password){
+    private boolean checkInputs(String email, String username, String password,String mobile1){
         Log.d(TAG, "checkInputs: checking inputs for null values.");
-        if(email.equals("") || username.equals("") || password.equals("")){
+        if(email.equals("") || username.equals("") || password.equals("") || mobile1.equals("")){
             Toast.makeText(mContext, "All fields must be filled out.", Toast.LENGTH_SHORT).show();
             return false;
         }

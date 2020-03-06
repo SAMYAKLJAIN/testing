@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,7 +52,7 @@ public class upload extends AppCompatActivity {
     private EditText mEditTextFileName;
     private ImageView mImageView;
     private ProgressBar mProgressBar;
-    private String user_id;
+    private String user_id, downloadimageurl;
     private Uri mImageUri;
     private FirebaseAuth mAuth;
     private StorageReference mStorageRef;
@@ -75,7 +76,7 @@ public class upload extends AppCompatActivity {
         mImageView = findViewById(R.id.image_view);
         mProgressBar = findViewById(R.id.progress_bar);
 
-        mStorageRef = FirebaseStorage.getInstance().getReference("new");
+        mStorageRef = FirebaseStorage.getInstance().getReference("user_images");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("user_image");
 
         mButtonChooseImage.setOnClickListener(new View.OnClickListener() {
@@ -86,45 +87,32 @@ public class upload extends AppCompatActivity {
         });
 
 
-
-
-
         mImageView.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View view) {
-                                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                          @Override
+                                          public void onClick(View view) {
+                                              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                                                 if (ContextCompat.checkSelfPermission(upload.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                                  if (ContextCompat.checkSelfPermission(upload.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-                                                     Toast.makeText(upload.this, "Permission Denied", Toast.LENGTH_LONG).show();
-                                                     ActivityCompat.requestPermissions(upload.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                                                      Toast.makeText(upload.this, "Permission Denied", Toast.LENGTH_LONG).show();
+                                                      ActivityCompat.requestPermissions(upload.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
 
-                                                 } else {
-                                                     choseImage();
+                                                  } else {
+                                                      choseImage();
 
-                                                 }
+                                                  }
 
-                                             } else {
+                                              } else {
 
-                                                 choseImage();
+                                                  choseImage();
 
-                                             }
+                                              }
 
-                                         }
+                                          }
 
-                                     }
+                                      }
 
         );
-
-
-
-
-
-
-
-
-
-
 
 
         mButtonUpload.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +135,7 @@ public class upload extends AppCompatActivity {
     }
 
 
-    private void choseImage (){
+    private void choseImage() {
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(1, 1)
@@ -155,13 +143,13 @@ public class upload extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult ( int requestCode, int resultCode, Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK ) {
+            if (resultCode == RESULT_OK) {
 
                 mImageUri = result.getUri();
                 mImageView.setImageURI(mImageUri);
@@ -205,7 +193,7 @@ mImageView.setImageURI(mImageUri);
 
     private void uploadFile() {
         if (mImageUri != null) {
-            StorageReference fileReference = mStorageRef.child(user_id
+            final StorageReference fileReference = mStorageRef.child(user_id
                     + "." + "jpg");
 
             mUploadTask = fileReference.putFile(mImageUri)
@@ -223,28 +211,36 @@ mImageView.setImageURI(mImageUri);
                             Toast.makeText(upload.this, "Upload successful", Toast.LENGTH_LONG).show();
 
 
+                            Task<Uri> urltask = mUploadTask.continueWithTask(new Continuation() {
+                                @Override
+                                public Object then(@NonNull Task task) throws Exception {
+                                    if (!task.isSuccessful()) {
+                                        throw task.getException();
+
+                                    }
+                                    downloadimageurl = fileReference.getDownloadUrl().toString();
+                                    return fileReference.getDownloadUrl();
 
 
+                                }
+                            }).addOnCompleteListener(new OnCompleteListener() {
+                                @Override
+                                public void onComplete(@NonNull Task task) {
+                                    if (task.isSuccessful()) {
+
+downloadimageurl=task.getResult().toString();
+                                        Toast.makeText(upload.this, "getting product image successfully", Toast.LENGTH_SHORT).show();
+                                        savedata();
+
+                                    }
+                                }
+                            });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*                            Upload upload = new Upload(user_id.trim(),
+                            Upload upload = new Upload(user_id.trim(),
                                     taskSnapshot.getUploadSessionUri().toString());
                             String uploadId = mDatabaseRef.push().getKey();
-                            mDatabaseRef.child(uploadId).setValue("hiii");*/
+                            mDatabaseRef.child(uploadId).setValue("hiii");
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -266,81 +262,51 @@ mImageView.setImageURI(mImageUri);
         /******************************************* downloading url to firebasedatabase ************************/
     }
 
-    private void storeData(Task<UploadTask.TaskSnapshot> task) {
+    private void savedata() {
+
+        Map<String, String> userData = new HashMap<>();
 
 
-        Uri downloadUrl;
+        userData.put("userImage", downloadimageurl);
+
+        firebaseFirestore.collection("users").document(user_id).update("userImage",downloadimageurl).addOnCompleteListener(new OnCompleteListener<Void>() {
 
 
-        if (task != null) {
+            @Override
 
 
-            mStorageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Uri downloadUrl = uri;
-                    Toast.makeText(getBaseContext(), "Upload success! URL - " + downloadUrl.toString() , Toast.LENGTH_SHORT).show();
-                    Map<String, String> userData = new HashMap<>();
+            public void onComplete(@NonNull Task<Void> task) {
 
 
-                    userData.put("userImage", downloadUrl.toString());
+                if (task.isSuccessful()) {
 
 
-                    firebaseFirestore.collection("Users").document(user_id).set(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    Toast.makeText(upload.this, "User Data is Stored Successfully", Toast.LENGTH_LONG).show();
 
 
-                        @Override
+                    Intent mainIntent = new Intent(upload.this, home.class);
 
 
-                        public void onComplete(@NonNull Task<Void> task) {
+                    startActivity(mainIntent);
+
+                    finish();
 
 
-                            if (task.isSuccessful()) {
+                } else {
 
 
+                    String error = task.getException().getMessage();
 
 
-                                Toast.makeText(upload.this, "User Data is Stored Successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(upload.this, "(FIRESTORE Error) : " + error, Toast.LENGTH_LONG).show();
 
-
-                                Intent mainIntent = new Intent(upload.this, home.class);
-
-
-                                startActivity(mainIntent);
-
-                                finish();
-
-
-                            } else {
-
-
-                                String error = task.getException().getMessage();
-
-
-                                Toast.makeText(upload.this, "(FIRESTORE Error) : " + error, Toast.LENGTH_LONG).show();
-
-
-                            }
-
-
-                            
-
-
-                        }
-
-                    });
 
                 }
-            });
-
-        } else {
 
 
-            System.out.println("sassfuck NCHaalaalalal");
+            }
 
 
-        }
-
-
+        });
     }
 }
