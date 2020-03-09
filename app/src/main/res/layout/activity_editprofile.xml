@@ -10,16 +10,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/layout">
-
-
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
         <Button
             android:id="@+id/button_choose_image"
-            android:layout_width="136dp"
+            android:layout_width="120dp"
+            android:background="@drawable/buttonstyle"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="250dp"
+            android:layout_marginLeft="200dp"
             android:layout_marginTop="100dp"
             android:text="Upload Image"
             android:textAllCaps="false" />
+</LinearLayout>
 
         <ImageView
 
@@ -65,9 +68,9 @@
 
             <Button
                 android:id="@+id/saving"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/whiteroundedbutton"
+                android:background="@drawable/buttonstyle"
                 android:padding="3dp"
                 android:text="Submit"
                 android:textAllCaps="false"
@@ -76,46 +79,10 @@
 android:layout_marginTop="34dp"
 
                 android:textStyle="bold"
-                app:layout_constraintLeft_toRightOf="@id/bday"
-                app:layout_constraintTop_toBottomOf="@id/bday" />
-
-            <EditText
-                android:id="@+id/location"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/transparent"
-                android:drawableLeft="@drawable/ic_location_on_black_24dp"
-                android:drawablePadding="8dp"
-                android:gravity="center_vertical"
-                android:hint="@string/location"
-                android:inputType="textCapWords"
-                android:padding="10dp"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintLeft_toRightOf="@id/gender"
-                app:layout_constraintTop_toBottomOf="@id/gender" />
-
-            <EditText
-                android:id="@+id/bday"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/transparent"
-                android:drawableLeft="@drawable/ic_cake_black_24dp"
-                android:drawablePadding="8dp"
-                android:gravity="center_vertical"
-                android:hint="DOB : dd/mm/yy"
-                android:inputType="textCapWords"
-                android:padding="10dp"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:textSize="16sp"
                 app:layout_constraintLeft_toRightOf="@id/location"
                 app:layout_constraintTop_toBottomOf="@id/location" />
+
+
 
             <EditText
                 android:id="@+id/usernames"
@@ -150,15 +117,15 @@ android:layout_marginTop="34dp"
 
 
             <EditText
-                android:id="@+id/gender"
+                android:id="@+id/location"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@android:color/transparent"
-                android:drawableLeft="@drawable/ic_person_black_24dp"
+                android:drawableLeft="@drawable/ic_location_on_black_24dp"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                android:hint="Gender"
+                android:hint="location"
                 android:inputType="textCapWords"
                 android:padding="10dp"
                 android:singleLine="true"
