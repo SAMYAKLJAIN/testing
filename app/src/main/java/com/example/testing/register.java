@@ -81,7 +81,7 @@ public class register extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(register.this, "vreated ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(register.this, "created ", Toast.LENGTH_SHORT).show();
                 email = mEmail.getText().toString();
                 username = mUsername.getText().toString();
                 password = mPassword.getText().toString();

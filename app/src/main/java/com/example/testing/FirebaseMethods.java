@@ -94,13 +94,13 @@ public class FirebaseMethods extends AppCompatActivity {
                             dref.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(mContext, "successfully created"+userID, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, "user added"+userID, Toast.LENGTH_SHORT).show();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     String error=e.getMessage();
-                                    Toast.makeText(mContext, error , Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext,error , Toast.LENGTH_SHORT).show();
                                 }
                             });
 
